@@ -1,0 +1,7 @@
+(library
+	(name urbosa)
+	(public_name urbosa)
+	(libraries lwt lwt.unix)
+	(preprocess (pps lwt_ppx))
+)
+(include_subdirs unqualified)

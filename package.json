@@ -1,0 +1,34 @@
+{
+  "name": "urbosa",
+  "version": "0.1.0",
+  "description": "Low-level http server written in OCaml using Lwt promises.",
+  "main": "index.js",
+  "scripts": {
+    "dune-build": "esy b dune build",
+    "esy": "esy",
+    "install": "esy install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shawn-mcginty/urbosa.git"
+  },
+  "author": "Shawn McGinty <mcginty.shawn@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shawn-mcginty/urbosa/issues"
+  },
+  "homepage": "https://github.com/shawn-mcginty/urbosa#readme",
+  "dependencies": {
+    "@opam/dune": "~2.7",
+    "@opam/lwt": ">=5.1.1",
+    "@opam/lwt_ppx": ">=2.0.1"
+  },
+  "devDependencies": {
+    "esy": "^0.6.7",
+    "ocaml": "~4.8"
+  },
+  "peerDependencies": {
+    "ocaml": "~4.8"
+  }
+}
