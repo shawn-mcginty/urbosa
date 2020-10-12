@@ -4,8 +4,17 @@ let listen ?(inet_addr = Unix.inet_addr_any) port =
   let _ =
     Lwt.async (fun () ->
         let%lwt _server =
-          Lwt_io.establish_server_with_client_socket listen_address
-            (fun _ _ -> Lwt.return_unit)
+          Lwt_io.establish_server_with_client_socket listen_address (fun client_socket file_descr ->
+              let () = print_endline "----------\n-> Incoming socket event" in
+              let () = Debug_utils.inspect_sockaddr client_socket in
+              let () = Debug_utils.inspect_file_descr file_descr in
+              let read_ch = Lwt_io.of_fd file_descr ~mode:Lwt_io.input in
+              let _write_ch = Lwt_io.of_fd file_descr ~mode:Lwt_io.output in
+              let%lwt line1 = Lwt_io.read_line read_ch in
+              let () = print_endline "\n" in
+              let () = print_endline line1 in
+              let () = print_endline "----------" in
+              Lwt.return_unit)
         in
         Lwt.return_unit)
   in
