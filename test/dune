@@ -1,0 +1,6 @@
+(executable
+	(name test)
+	(libraries lwt lwt.unix urbosa)
+	(preprocess (pps lwt_ppx))
+)
+(include_subdirs unqualified)
