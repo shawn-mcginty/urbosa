@@ -17,7 +17,9 @@ let str_of_meth meth =
 	| Other s -> s
 
 let read_until ch stream =
+	let () = print_endline ("read until '" ^ (Char.escaped ch) ^ "'") in
 	let%lwt chars = Lwt_stream.get_while (fun c -> c <> ch) stream in
+	let () = print_endline "done reading." in
 	let%lwt () = Lwt_stream.junk stream in
 	match List.length chars with
 	| 0 -> Lwt.return ""
@@ -27,13 +29,18 @@ let read_until ch stream =
 
 (* non-tail recursive, there's probably a better way to do this *)
 let rec parse_headers ?headers:(hds = []) stream =
+	let () = print_endline "parse_headers" in
 	if Lwt_stream.is_closed stream then
+		let () = print_endline "is_closed" in
 		Lwt.return hds
 	else
 		let%lwt next = Lwt_stream.peek stream in
 		match next with
-		| None | Some '\n' -> Lwt.return hds
-		| Some _ ->
+		| None | Some '\n' | Some '\r' ->
+			let () = print_endline "found none or newline" in
+			Lwt.return hds
+		| Some x ->
+			let () = print_endline ("I just round found->'" ^ (Char.escaped x) ^ "'") in
 			let%lwt next_hd_key = read_until ':' stream in
 			let%lwt next_hd_val = read_until '\n' stream in
 			parse_headers ~headers:(hds @ [(next_hd_key, next_hd_val)]) stream
@@ -55,6 +62,7 @@ class t ch_stream = object
 		http_version <- http_ver_str;
 		state <- Ready;
 		let%lwt hds = parse_headers stream in
+		let () = print_endline "finished parsing those headers" in
 		headers <- hds;
 		Lwt.return state
 	
