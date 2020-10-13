@@ -10,9 +10,10 @@ let listen ?(inet_addr = Unix.inet_addr_any) port =
               let () = Debug_utils.inspect_file_descr file_descr in
               let read_ch = Lwt_io.of_fd file_descr ~mode:Lwt_io.input in
               let _write_ch = Lwt_io.of_fd file_descr ~mode:Lwt_io.output in
-              let%lwt line1 = Lwt_io.read_line read_ch in
-              let () = print_endline "\n" in
-              let () = print_endline line1 in
+              let read_st = Lwt_io.read_chars read_ch in
+              let req = new Req.t read_st in
+              let%lwt _ = req#init () in
+              let () = print_endline (req#to_string ()) in
               let () = print_endline "----------" in
               Lwt.return_unit)
         in

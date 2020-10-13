@@ -7,7 +7,7 @@
     "dune-build": "esy b dune build",
     "esy": "esy",
     "install": "esy install",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "esy b dune exec test/test.exe"
   },
   "repository": {
     "type": "git",
@@ -22,13 +22,14 @@
   "dependencies": {
     "@opam/dune": "~2.7",
     "@opam/lwt": ">=5.1.1",
-    "@opam/lwt_ppx": ">=2.0.1"
+    "@opam/lwt_ppx": ">=2.0.1",
+    "@opam/ocaml-lsp-server": "ocaml/ocaml-lsp:ocaml-lsp-server.opam"
   },
   "devDependencies": {
     "esy": "^0.6.7",
-    "ocaml": "~4.8"
+    "ocaml": "~4.9"
   },
   "peerDependencies": {
-    "ocaml": "~4.8"
+    "ocaml": "~4.9"
   }
 }
